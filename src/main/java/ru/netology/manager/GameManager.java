@@ -6,42 +6,33 @@ import lombok.NoArgsConstructor;
 import ru.netology.data.PlayerData;
 import ru.netology.exception.NotRegisteredException;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
 public class GameManager {
-    private List<PlayerData> players = new ArrayList<>();
+    private Map<String, PlayerData> players = new HashMap<>();
 
-    public boolean register(PlayerData player) {
-        return players.add(player);
+    public void register(String name, PlayerData player) {
+        players.put(name, player);
     }
 
     public int round(String playerName1, String playerName2) {
-        int indexOne = indexFound(playerName1);
-        int indexTwo = indexFound(playerName2);
-        if (indexOne == -1) {
+        PlayerData playerOne = players.get(playerName1.toLowerCase());
+        PlayerData playerTwo = players.get(playerName2.toLowerCase());
+        if (playerOne == null) {
             throw new NotRegisteredException("Первый игрок не зарегистрирован для участия в турнире!");
-        } else if (indexTwo == -1) {
+        } else if (playerTwo == null) {
             throw new NotRegisteredException("Второй игрок не зарегистрирован для участия в турнире!");
         }
-        if (players.get(indexOne).getStrength() > players.get(indexTwo).getStrength()) {
+        if (playerOne.getStrength() > playerTwo.getStrength()) {
             return 1;
-        } else if (players.get(indexOne).getStrength() < players.get(indexTwo).getStrength()) {
+        } else if (playerOne.getStrength() < playerTwo.getStrength()) {
             return 2;
         } else {
             return 0;
         }
-    }
-
-    public int indexFound(String playerName) {
-        for (PlayerData player : players) {
-            if (player.getName().equalsIgnoreCase(playerName)) {
-                return players.indexOf(player);
-            }
-        }
-        return -1;
     }
 }
