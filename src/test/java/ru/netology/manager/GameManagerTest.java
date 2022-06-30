@@ -16,9 +16,9 @@ class GameManagerTest {
 
     @BeforeEach
     void setup() {
-        manager.register(playerOne);
-        manager.register(playerTwo);
-        manager.register(playerThree);
+        manager.register("вася-чемпион", playerOne);
+        manager.register("иван", playerTwo);
+        manager.register("петя", playerThree);
     }
 
     @Test
